@@ -22,7 +22,8 @@ const About = () => {
         <div className="col">
           <h2>Our Journey</h2>
           <p>
-            Our journey began in 2024, when our founder, Vipul Jain, envisioned
+            Our journey began in 2024, when our founder, Vipul Jain,
+            Vivek Kumar Gupta, Vishal Katariya, Vishal Sharma envisioned
             a platform where customers could find everything they need in one
             place, without compromising on quality or convenience.
           </p>
