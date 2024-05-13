@@ -32,19 +32,19 @@ const Footer = () => {
         </li>
       </ul>
       <div className="footer-social-icons">
-        <a className="footer-icons-container" href="#">
+        <a className="footer-icons-container" href="https://www.instagram.com/v4martservices?utm_source=qr&igsh=NG1vZ2loa3V0d2l4">
           <img src={instagram_icon} alt="" />
         </a>
-        <a className="footer-icons-container" href="#">
-          <img src={pintrest_icon} alt="" />
+        <a className="footer-icons-container" href="https://www.facebook.com/v4mart.2024?mibextid=ZbWKwL">
+        <img src={facebook.png} alt="" />
         </a>
-        <a className="footer-icons-container" href="#">
+        <a className="footer-icons-container" href="https://web.whatsapp.com/">
           <img src={whatsapp_icon} alt="" />
         </a>
       </div>
       <div className="footer-copyright">
         <hr />
-        <p>Copyright @ 2023 - All Right Reserved.</p>
+        <p>Copyright @ 2024 - All Right Reserved.</p>
       </div>
     </div>
   );
