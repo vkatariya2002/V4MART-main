@@ -36,7 +36,7 @@ const Footer = () => {
           <img src={instagram_icon} alt="" />
         </a>
         <a className="footer-icons-container" href="https://www.facebook.com/v4mart.2024?mibextid=ZbWKwL">
-        <img src={facebook} alt="" />
+        <img src={pintrest_icon} alt="" />
         </a>
         <a className="footer-icons-container" href="https://web.whatsapp.com/">
           <img src={whatsapp_icon} alt="" />
