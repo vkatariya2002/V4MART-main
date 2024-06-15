@@ -5,47 +5,48 @@ import { ShopContext } from "../../Context/ShopContext";
 import axios from "axios";
 import StripeCheckout from "react-stripe-checkout";
 import { toast } from "react-toastify";
+
 const CartItems = () => {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(0);
   const [error, setError] = useState("");
   const [promo, setPromo] = useState(false);
   const { products } = useContext(ShopContext);
   const stripeKey = "pk_test_VvWjqy13EI2MSDgDxy3b5jbx00KrrL41yi";
-  const { cartItems, removeFromCart, getTotalCartAmount } =
-    useContext(ShopContext);
+  const { cartItems, removeFromCart, getTotalCartAmount } = useContext(ShopContext);
   const [orderId, setOrderId] = useState("");
+
   const handleRemoveToCart = (productId) => {
     removeFromCart(productId.id);
-    toast.success(`Remove ${productId.name} from cart successfully!`);
+    toast.success(`Removed ${productId.name} from cart successfully!`);
   };
+
   useEffect(() => {
-    setAmount(getTotalCartAmount());
-  }, []);
+    setAmount(getTotalCartAmount() * 100); // Convert to cents
+  }, [cartItems]);
+
   const onToken = (token) => {
     console.log(token);
     alert("Your Payment has been processed");
   };
+
   const handlePayment = async () => {
     try {
-      // Create a UPI payment on the server
       const response = await axios.post(
         "https://v4mart-backend.onrender.com/create-upi-payment",
         {
-          amount: amount,
-          currency: "INR", // Set currency to INR for Indian Rupees
+          amount: amount / 100, // Convert back to main currency unit (dollars)
+          currency: "INR",
         }
       );
       setOrderId(response.data.orderId);
-      // Implement logic to redirect user to the UPI payment page
-      // You would typically redirect the user to the Razorpay checkout page here
     } catch (error) {
       console.error("Error creating UPI payment:", error);
       setError("An error occurred while creating UPI payment");
     }
   };
+
   return orderId ? (
     <div>
-      {" "}
       {orderId && <p>Order ID: {orderId}</p>}
       {error && <p>{error}</p>}
     </div>
@@ -63,19 +64,17 @@ const CartItems = () => {
       {products.map((e) => {
         if (cartItems[e.id] > 0) {
           return (
-            <div>
+            <div key={e.id}>
               <div className="cartitems-format-main cartitems-format">
                 <img className="cartitems-product-icon" src={e.image} alt="" />
-                <p cartitems-product-title>{e.name}</p>
+                <p className="cartitems-product-title">{e.name}</p>
                 <p>${e.new_price}</p>
                 <button className="cartitems-quantity">
                   {cartItems[e.id]}
                 </button>
                 <p>${e.new_price * cartItems[e.id]}</p>
                 <img
-                  onClick={() => {
-                    handleRemoveToCart(e)
-                  }}
+                  onClick={() => handleRemoveToCart(e)}
                   className="cartitems-remove-icon"
                   src={cross_icon}
                   alt=""
@@ -87,7 +86,6 @@ const CartItems = () => {
         }
         return null;
       })}
-
       <div className="cartitems-down">
         <div className="cartitems-total">
           <h1>Cart Totals</h1>
@@ -110,7 +108,7 @@ const CartItems = () => {
           <StripeCheckout
             name="Book Checkout"
             description="Please fill in the details below"
-            amount={1 * 100}
+            amount={amount}
             currency="INR"
             stripeKey={stripeKey}
             token={onToken}
@@ -118,10 +116,9 @@ const CartItems = () => {
           >
             <button className="button-primary">Proceed to Checkout</button>
           </StripeCheckout>
-          {/* <button onClick={handlePayment}>PROCEED TO CHECKOUT</button> */}
         </div>
         <div className="cartitems-promocode">
-          <p>If you have a promo code, Enter it here</p>
+          <p>If you have a promo code, enter it here</p>
           <div className="cartitems-promobox">
             <input type="text" placeholder="promo code" onChange={() => setPromo(false)} />
             <button onClick={() => setPromo(true)}>Submit</button>
